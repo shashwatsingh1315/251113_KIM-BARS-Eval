@@ -3,1101 +3,1614 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kimbal BARS Assessment</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>BARS Assessment - People's Lead Position</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4796E3',
-                        gray: {
-                            100: '#f8fafc',
-                            200: '#f1f5f9',
-                            300: '#e2e8f0',
-                            400: '#cbd5e1',
-                            500: '#94a3b8',
-                            600: '#64748b',
-                            700: '#475569',
-                            800: '#334155',
-                            900: '#1e293b'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
     <style>
-        .fade-in {
-            animation: fadeIn 0.3s ease-in;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fa;
+            color: #1a1a1a;
         }
-        
-        .progress-bar {
-            transition: width 0.4s ease;
+
+        /* Color Palette - Only 4 colors */
+        :root {
+            --primary: #6366F1;
+            --white: #ffffff;
+            --gray-light: #f5f7fa;
+            --gray-dark: #1a1a1a;
+            --gray-text: #64748b;
+            --gray-border: #e2e8f0;
         }
-        
-        .card-shadow {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        }
-        
-        .hover-lift {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        
-        .hover-lift:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
-        }
-        
-        .drag-over {
-            border-color: #6366F1 !important;
-            background-color: #f0f4ff;
-        }
-        
-        .checkbox-card {
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        
-        .checkbox-card input:checked + * ~ * {
-            border-color: #6366F1;
-            background-color: #f0f4ff;
+
+        .btn-primary:hover {
+            background-color: #4f46e5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
-        
-        .checkbox-card:has(input:checked) {
-            border-color: #6366F1;
-            background-color: #f0f4ff;
+
+        .btn-primary:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
-        
-        .print-only {
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--gray-text);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 1px solid var(--gray-border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--gray-light);
+            color: var(--gray-dark);
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--gray-border);
+        }
+
+        .card-small {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid var(--gray-border);
+        }
+
+        .screen {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Progress Bar */
+        .progress-bar-track {
+            background: var(--gray-border);
+            height: 4px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: var(--primary);
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        /* Drag & Drop */
+        .drop-zone {
+            border: 2px dashed var(--gray-border);
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .drop-zone:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.03);
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        /* Checkbox */
+        .checkbox-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Radio */
+        .radio-item {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid var(--gray-border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .radio-item:hover {
+            background: var(--gray-light);
+            border-color: var(--primary);
+        }
+
+        .radio-item input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .radio-item input[type="radio"]:checked + .radio-label {
+            color: var(--gray-dark);
+            font-weight: 600;
+        }
+
+        .radio-label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .radio-label-title {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-dark);
+            margin-bottom: 4px;
+        }
+
+        .radio-label-desc {
+            display: block;
+            font-size: 13px;
+            color: var(--gray-text);
+            line-height: 1.4;
+        }
+
+        /* Text Input */
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--gray-border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: var(--gray-dark);
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--gray-dark);
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-dark);
+            margin-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-dark);
+        }
+
+        h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        p {
+            font-size: 14px;
+            color: var(--gray-text);
+            line-height: 1.6;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-dark);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* Parameter Grid */
+        .param-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .param-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Parameter Card */
+        .param-card {
+            background: white;
+            border: 2px solid var(--gray-border);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .param-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+        }
+
+        .param-card.selected {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.02);
+        }
+
+        .param-card-title {
+            font-weight: 600;
+            color: var(--gray-dark);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .param-card-desc {
+            font-size: 13px;
+            color: var(--gray-text);
+            line-height: 1.4;
+        }
+
+        /* Question Box */
+        .question-box {
+            background: rgba(99, 102, 241, 0.05);
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .question-box-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .question-box-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--gray-dark);
+            line-height: 1.6;
+        }
+
+        /* Level Reference Box */
+        .level-reference {
+            background: var(--gray-light);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 1024px) {
+            .level-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .level-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .level-item {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid var(--gray-border);
+        }
+
+        .level-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+            background: var(--primary);
+            color: white;
+        }
+
+        .level-content-title {
+            font-weight: 700;
+            color: var(--gray-dark);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .level-content-desc {
+            font-size: 13px;
+            color: var(--gray-text);
+            line-height: 1.6;
+        }
+
+        /* STAR Fields */
+        .star-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .star-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .star-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .star-field label {
+            margin-bottom: 8px;
+        }
+
+        .star-field textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Score Card */
+        .score-card {
+            background: var(--gray-light);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .score-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .score-card-title {
+            font-weight: 600;
+            color: var(--gray-dark);
+            font-size: 14px;
+        }
+
+        .score-card-value {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: var(--gray-light);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .summary-score {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .summary-score-label {
+            font-size: 13px;
+            color: var(--gray-text);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .recommendation-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 13px;
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .progress-info {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-text);
+        }
+
+        /* Response Item */
+        .response-item {
+            background: var(--gray-light);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .response-item-title {
+            font-weight: 600;
+            color: var(--gray-dark);
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .response-item-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .response-item-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .response-item-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .response-field-label {
+            font-weight: 600;
+            color: var(--gray-text);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .response-field-value {
+            color: var(--gray-dark);
+            line-height: 1.5;
+        }
+
+        /* Header */
+        .app-header {
+            background: white;
+            border-bottom: 1px solid var(--gray-border);
+            padding: 16px 0;
+            margin-bottom: 32px;
+        }
+
+        .app-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .app-header h1 {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .app-header p {
+            font-size: 13px;
+            color: var(--gray-text);
+        }
+
+        /* Container */
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 32px;
+        }
+
+        /* Error Message */
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            color: #991b1b;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .error-message.hidden {
             display: none;
         }
-        
+
+        /* Info Box */
+        .info-box {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-box-title {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .info-box-text {
+            font-size: 13px;
+            color: var(--gray-text);
+            line-height: 1.5;
+        }
+
+        .info-box-list {
+            list-style: none;
+            margin: 8px 0 0 0;
+            padding: 0;
+        }
+
+        .info-box-list li {
+            font-size: 13px;
+            color: var(--gray-text);
+            margin: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .info-box-list li:before {
+            content: "•";
+            position: absolute;
+            left: 8px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Print Styles */
         @media print {
             .no-print {
                 display: none !important;
             }
-            
-            .print-only {
-                display: block !important;
-            }
-            
+
             body {
-                background-color: white !important;
+                background: white;
             }
-            
-            .card-shadow {
+
+            .card {
+                page-break-inside: avoid;
                 box-shadow: none;
-                border: 1px solid #e2e8f0;
+                border: 1px solid var(--gray-border);
             }
-            
-            header {
-                margin-bottom: 2rem;
+
+            .response-item {
+                page-break-inside: avoid;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .app-header {
+                border: none;
+                margin-bottom: 24px;
             }
         }
     </style>
 </head>
-<body class="bg-gray-100 font-sans min-h-screen">
-    <div id="app" class="max-w-6xl mx-auto px-4 py-8">
-        <header class="text-center mb-12">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Kimbal BARS Assessment</h1>
-            <p class="text-gray-600 mt-2">Behaviorally Anchored Rating Scale Evaluation System</p>
-        </header>
-        
-        <main id="main-content">
-            <!-- File Upload Screen -->
-            <div id="upload-screen" class="screen fade-in">
-                <div class="bg-white rounded-xl card-shadow p-6 md:p-8 max-w-3xl mx-auto">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Upload Assessment Parameters</h2>
-                    
-                    <div class="mb-8">
-                        <p class="text-gray-600 mb-4">Please upload a CSV file containing the assessment parameters. The file must have exactly 7 columns:</p>
-                        <ul class="list-disc pl-5 text-gray-600 space-y-1 mb-6">
-                            <li><strong>Parameter Name</strong> - Name of the competency being assessed</li>
-                            <li><strong>Parameter Details/Description</strong> - Brief description of the parameter</li>
-                            <li><strong>Interview Question to ask</strong> - Specific question to ask during interview</li>
-                            <li><strong>Level 1: Needs Improvement</strong> - Behavioral indicator for Level 1</li>
-                            <li><strong>Level 2: Meets Expectations</strong> - Behavioral indicator for Level 2</li>
-                            <li><strong>Level 3: Exceeds Expectations</strong> - Behavioral indicator for Level 3</li>
-                            <li><strong>Level 4: Outstanding</strong> - Behavioral indicator for Level 4</li>
-                        </ul>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="app-header-content">
+                <h1>BARS Assessment</h1>
+                <p>People's Lead Position Evaluation</p>
+            </div>
+        </div>
+
+        <!-- Main Container -->
+        <div class="app-container">
+            <!-- Screen 1: Upload -->
+            <div id="screen-upload" class="screen">
+                <div class="card" style="max-width: 900px; margin: 0 auto;">
+                    <!-- Header Section -->
+                    <div style="margin-bottom: 40px;">
+                        <h2 style="margin-bottom: 12px;">Upload Assessment Parameters</h2>
+                        <p style="font-size: 15px; color: var(--gray-text); line-height: 1.6;">Start by uploading a CSV file containing your assessment parameters. Each parameter will include interview questions and BARS level descriptions (1-4) for evaluation.</p>
                     </div>
-                    
-                    <div id="drop-area" class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer transition-all hover:border-primary hover:bg-gray-50 mb-6">
-                        <div class="flex flex-col items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                            </svg>
-                            <p class="text-gray-600 mb-1">Drag & drop your CSV file here</p>
-                            <p class="text-gray-500 text-sm mb-4">or</p>
-                            <button id="browse-btn" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
-                                Browse Files
-                            </button>
-                        </div>
-                        <input type="file" id="file-input" accept=".csv" class="hidden">
-                    </div>
-                    
-                    <div id="error-message" class="hidden bg-red-50 border border-red-100 rounded-lg p-4 mb-6">
-                        <div class="flex">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500 mr-2 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                            </svg>
-                            <div>
-                                <h3 class="text-red-800 font-medium">Error Loading File</h3>
-                                <p id="error-text" class="text-red-700 text-sm mt-1"></p>
+
+                    <!-- Two Column Layout -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px;">
+                        <!-- Left Column: Upload Area -->
+                        <div>
+                            <div style="margin-bottom: 16px;">
+                                <h4 style="color: var(--primary); margin-bottom: 12px;">Step 1: Upload Your File</h4>
                             </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
-                        <div class="flex">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500 mr-2 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                            </svg>
-                            <div>
-                                <h3 class="text-blue-800 font-medium">Need a template?</h3>
-                                <p class="text-blue-700 text-sm mt-1">Download our sample CSV with 5 pre-built parameters to get started</p>
-                                <button id="download-template" class="mt-2 text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center">
-                                    Download Sample Template
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+
+                            <!-- Drop Zone -->
+                            <div class="drop-zone no-print" id="drop-zone" style="padding: 60px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <div style="margin-bottom: 16px;">
+                                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--primary); opacity: 0.7;">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="17 8 12 3 7 8"></polyline>
+                                        <line x1="12" y1="3" x2="12" y2="15"></line>
                                     </svg>
-                                </button>
+                                </div>
+                                <p style="font-weight: 600; color: var(--gray-dark); margin-bottom: 8px; font-size: 15px;">Drag CSV file here</p>
+                                <p style="font-size: 13px; color: var(--gray-text); margin-bottom: 16px;">or click to browse</p>
+                                <button class="btn-primary" id="browse-btn" style="font-size: 13px;">Choose File</button>
+                                <input type="file" id="file-input" accept=".csv" style="display: none;">
                             </div>
-                        </div>
-                    </div>
-                    
-                    <div id="preview-section" class="hidden">
-                        <h3 class="text-lg font-medium text-gray-800 mb-4">CSV Preview</h3>
-                        <div class="overflow-x-auto mb-4">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Parameter Name</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Question</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="preview-table-body" class="bg-white divide-y divide-gray-200">
-                                </tbody>
-                            </table>
-                        </div>
-                        <p id="preview-count" class="text-sm text-gray-600 mb-6"></p>
-                        <div class="flex justify-end space-x-3">
-                            <button id="change-file" class="text-gray-600 hover:text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors">
-                                Change File
-                            </button>
-                            <button id="continue-to-selection" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
-                                Continue to Selection
+
+                            <!-- Error Message -->
+                            <div id="error-message" class="error-message hidden" style="margin-top: 16px;"></div>
+
+                            <!-- Template Button -->
+                            <button class="btn-secondary" id="download-template" style="width: 100%; margin-top: 20px; border: 1px solid var(--gray-border); background: var(--white);">
+                                <span style="margin-right: 8px;">📥</span> Download Sample Template
                             </button>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Parameter Selection Screen -->
-            <div id="selection-screen" class="screen hidden fade-in">
-                <div class="bg-white rounded-xl card-shadow p-6 md:p-8">
-                    <h2 class="text-2xl font-semibold text-gray-800 mb-2">Select Assessment Parameters</h2>
-                    <p class="text-gray-600 mb-6">Choose the parameters you want to evaluate for this candidate</p>
-                    
-                    <div class="mb-6">
-                        <label for="candidate-name" class="block text-sm font-medium text-gray-700 mb-2">Candidate Name (Optional)</label>
-                        <input type="text" id="candidate-name" placeholder="Enter candidate's name" class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all">
-                    </div>
-                    
-                    <p class="text-sm text-gray-600 mb-4">Select at least one parameter:</p>
-                    <div id="parameters-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                    </div>
-                    
-                    <p id="selection-warning" class="text-red-600 text-sm mb-6 hidden">Please select at least one parameter to continue.</p>
-                    
-                    <div class="flex justify-between">
-                        <button id="back-to-upload" class="text-gray-600 hover:text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors">
-                            Back
-                        </button>
-                        <button id="start-assessment" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
-                            Start Assessment
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Interview Phase Screen -->
-            <div id="interview-screen" class="screen hidden fade-in">
-                <div class="bg-white rounded-xl card-shadow p-6 md:p-8">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+
+                        <!-- Right Column: Requirements -->
                         <div>
-                            <h2 class="text-2xl font-semibold text-gray-800">Interview Phase</h2>
-                            <p class="text-gray-600">Pass 1: Conducting the Interview</p>
-                        </div>
-                        <div class="mt-4 md:mt-0">
-                            <span id="interview-progress-text" class="text-primary font-medium">1 of 5 parameters</span>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div id="interview-progress-bar" class="bg-primary h-2.5 rounded-full progress-bar" style="width: 20%"></div>
-                        </div>
-                    </div>
-                    
-                    <div id="parameter-details" class="mb-8">
-                        <h3 id="current-parameter-name" class="text-xl font-semibold text-gray-800 mb-2">Parameter Name</h3>
-                        <p id="current-parameter-description" class="text-gray-600 mb-6">Parameter description</p>
-                        
-                        <div class="bg-blue-50 border border-blue-100 rounded-lg p-5 mb-6">
-                            <h4 class="font-medium text-blue-800 mb-2">Interview Question</h4>
-                            <p id="current-interview-question" class="text-blue-700 text-base leading-relaxed">Question will appear here</p>
-                        </div>
-                        
-                        <div class="mb-6">
-                            <h4 class="font-medium text-gray-800 mb-3">BARS Levels Reference</h4>
-                            <div class="space-y-3">
-                                <div class="flex">
-                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
-                                        <span class="text-red-800 font-medium text-sm">1</span>
-                                    </div>
-                                    <div>
-                                        <h5 class="font-medium text-gray-800">Needs Improvement</h5>
-                                        <p id="level-1-desc" class="text-gray-600 text-sm">Level 1 description</p>
-                                    </div>
-                                </div>
-                                <div class="flex">
-                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
-                                        <span class="text-yellow-800 font-medium text-sm">2</span>
-                                    </div>
-                                    <div>
-                                        <h5 class="font-medium text-gray-800">Meets Expectations</h5>
-                                        <p id="level-2-desc" class="text-gray-600 text-sm">Level 2 description</p>
-                                    </div>
-                                </div>
-                                <div class="flex">
-                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                                        <span class="text-green-800 font-medium text-sm">3</span>
-                                    </div>
-                                    <div>
-                                        <h5 class="font-medium text-gray-800">Exceeds Expectations</h5>
-                                        <p id="level-3-desc" class="text-gray-600 text-sm">Level 3 description</p>
-                                    </div>
-                                </div>
-                                <div class="flex">
-                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center mr-3">
-                                        <span class="text-white font-medium text-sm">4</span>
-                                    </div>
-                                    <div>
-                                        <h5 class="font-medium text-gray-800">Outstanding</h5>
-                                        <p id="level-4-desc" class="text-gray-600 text-sm">Level 4 description</p>
-                                    </div>
-                                </div>
+                            <div style="margin-bottom: 16px;">
+                                <h4 style="color: var(--primary); margin-bottom: 12px;">Step 2: File Format</h4>
                             </div>
-                        </div>
-                        
-                        <div>
-                            <h4 class="font-medium text-gray-800 mb-3">STAR Method Notes</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Situation</label>
-                                    <textarea id="situation-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="Describe the situation the candidate faced"></textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Task</label>
-                                    <textarea id="task-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="What was the task or challenge"></textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Action</label>
-                                    <textarea id="action-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="What action did they take"></textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Result</label>
-                                    <textarea id="result-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all" placeholder="What was the result or outcome"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-between">
-                        <button id="prev-parameter" class="text-gray-600 hover:text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                            Previous
-                        </button>
-                        <button id="next-parameter" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
-                            Next Parameter
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Grading Phase Screen -->
-            <div id="grading-screen" class="screen hidden fade-in">
-                <div class="bg-white rounded-xl card-shadow p-6 md:p-8">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
-                        <div>
-                            <h2 class="text-2xl font-semibold text-gray-800">Grading Phase</h2>
-                            <p class="text-gray-600">Pass 2: Reviewing and Rating Performance</p>
-                        </div>
-                        <div class="mt-4 md:mt-0">
-                            <span id="grading-progress-text" class="text-primary font-medium">1 of 5 parameters</span>
-                        </div>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div id="grading-progress-bar" class="bg-primary h-2.5 rounded-full progress-bar" style="width: 20%"></div>
-                        </div>
-                    </div>
-                    
-                    <div id="grading-details" class="mb-8">
-                        <h3 id="grading-parameter-name" class="text-xl font-semibold text-gray-800 mb-2">Parameter Name</h3>
-                        <p id="grading-parameter-description" class="text-gray-600 mb-6">Parameter description</p>
-                        
-                        <div class="bg-blue-50 border border-blue-100 rounded-lg p-5 mb-6">
-                            <h4 class="font-medium text-blue-800 mb-2">Interview Question Asked</h4>
-                            <p id="grading-interview-question" class="text-blue-700 text-base leading-relaxed">Question</p>
-                        </div>
-                        
-                        <div class="mb-6">
-                            <h4 class="font-medium text-gray-800 mb-3">Your STAR Notes</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-lg">
-                                <div>
-                                    <h5 class="font-medium text-gray-700 mb-1">Situation</h5>
-                                    <p id="review-situation" class="text-gray-600 text-sm line-clamp-3">-</p>
-                                </div>
-                                <div>
-                                    <h5 class="font-medium text-gray-700 mb-1">Task</h5>
-                                    <p id="review-task" class="text-gray-600 text-sm line-clamp-3">-</p>
-                                </div>
-                                <div>
-                                    <h5 class="font-medium text-gray-700 mb-1">Action</h5>
-                                    <p id="review-action" class="text-gray-600 text-sm line-clamp-3">-</p>
-                                </div>
-                                <div>
-                                    <h5 class="font-medium text-gray-700 mb-1">Result</h5>
-                                    <p id="review-result" class="text-gray-600 text-sm line-clamp-3">-</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <h4 class="font-medium text-gray-800 mb-3">Rating <span class="text-red-600">*</span></h4>
-                            <div id="rating-warning" class="text-red-600 text-sm mb-3 hidden">Please select a rating before proceeding.</div>
-                            <div class="space-y-4">
-                                <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                                    <div class="flex items-center h-5 mt-0.5">
-                                        <input id="rating-1" name="rating" type="radio" class="focus:ring-primary h-4 w-4 text-primary border-gray-300 cursor-pointer">
+
+                            <!-- Clean Requirements Layout -->
+                            <div style="background: var(--gray-light); border-radius: 12px; padding: 24px; border-left: 4px solid var(--primary);">
+                                <p style="font-size: 13px; color: var(--gray-text); margin-bottom: 20px; line-height: 1.6;">Your CSV file must contain exactly <strong style="color: var(--gray-dark);">7 columns</strong> in this order:</p>
+                                
+                                <!-- Column List -->
+                                <div style="display: flex; flex-direction: column; gap: 12px;">
+                                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                        <div style="width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">1</div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--gray-dark); font-size: 13px;">Parameter Name</div>
+                                            <div style="font-size: 12px; color: var(--gray-text); margin-top: 2px;">e.g., Critical Thinking</div>
+                                        </div>
                                     </div>
-                                    <div class="ml-3 flex-1">
-                                        <label for="rating-1" class="font-medium text-gray-800 cursor-pointer block">Needs Improvement</label>
-                                        <p id="grade-level-1-desc" class="text-gray-600 text-sm">Level 1 description</p>
+                                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                        <div style="width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">2</div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--gray-dark); font-size: 13px;">Parameter Description</div>
+                                            <div style="font-size: 12px; color: var(--gray-text); margin-top: 2px;">Brief details about the parameter</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                                    <div class="flex items-center h-5 mt-0.5">
-                                        <input id="rating-2" name="rating" type="radio" class="focus:ring-primary h-4 w-4 text-primary border-gray-300 cursor-pointer">
+                                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                        <div style="width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">3</div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--gray-dark); font-size: 13px;">Interview Question</div>
+                                            <div style="font-size: 12px; color: var(--gray-text); margin-top: 2px;">Question to ask the candidate</div>
+                                        </div>
                                     </div>
-                                    <div class="ml-3 flex-1">
-                                        <label for="rating-2" class="font-medium text-gray-800 cursor-pointer block">Meets Expectations</label>
-                                        <p id="grade-level-2-desc" class="text-gray-600 text-sm">Level 2 description</p>
+                                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                        <div style="width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">4</div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--gray-dark); font-size: 13px;">Level 1: Needs Improvement</div>
+                                            <div style="font-size: 12px; color: var(--gray-text); margin-top: 2px;">Description for rating level 1</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                                    <div class="flex items-center h-5 mt-0.5">
-                                        <input id="rating-3" name="rating" type="radio" class="focus:ring-primary h-4 w-4 text-primary border-gray-300 cursor-pointer">
+                                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                        <div style="width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">5</div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--gray-dark); font-size: 13px;">Level 2: Meets Expectations</div>
+                                            <div style="font-size: 12px; color: var(--gray-text); margin-top: 2px;">Description for rating level 2</div>
+                                        </div>
                                     </div>
-                                    <div class="ml-3 flex-1">
-                                        <label for="rating-3" class="font-medium text-gray-800 cursor-pointer block">Exceeds Expectations</label>
-                                        <p id="grade-level-3-desc" class="text-gray-600 text-sm">Level 3 description</p>
+                                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                        <div style="width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">6</div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--gray-dark); font-size: 13px;">Level 3: Exceeds Expectations</div>
+                                            <div style="font-size: 12px; color: var(--gray-text); margin-top: 2px;">Description for rating level 3</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="flex items-start p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                                    <div class="flex items-center h-5 mt-0.5">
-                                        <input id="rating-4" name="rating" type="radio" class="focus:ring-primary h-4 w-4 text-primary border-gray-300 cursor-pointer">
-                                    </div>
-                                    <div class="ml-3 flex-1">
-                                        <label for="rating-4" class="font-medium text-gray-800 cursor-pointer block">Outstanding</label>
-                                        <p id="grade-level-4-desc" class="text-gray-600 text-sm">Level 4 description</p>
+                                    <div style="display: flex; gap: 12px; align-items: flex-start;">
+                                        <div style="width: 28px; height: 28px; background: var(--primary); color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0;">7</div>
+                                        <div>
+                                            <div style="font-weight: 600; color: var(--gray-dark); font-size: 13px;">Level 4: Outstanding</div>
+                                            <div style="font-size: 12px; color: var(--gray-text); margin-top: 2px;">Description for rating level 4</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="flex justify-between">
-                        <button id="prev-grading" class="text-gray-600 hover:text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                            Previous
-                        </button>
-                        <button id="next-grading" class="bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
-                            Next Parameter
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Results Screen -->
-            <div id="results-screen" class="screen hidden fade-in">
-                <div class="bg-white rounded-xl card-shadow p-6 md:p-8">
-                    <div class="text-center mb-8">
-                        <h2 class="text-2xl font-semibold text-gray-800">Assessment Results</h2>
-                        <p class="text-gray-600 mt-2">Kimbal Evaluation</p>
-                    </div>
-                    
-                    <div class="mb-8">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                            <div>
-                                <h3 class="text-xl font-semibold text-gray-800" id="results-candidate-name">Candidate: Unnamed</h3>
-                                <p class="text-gray-600">Overall Score: <span id="overall-score" class="font-bold text-primary">0.0</span>/4.0</p>
-                            </div>
-                            <div class="mt-4 md:mt-0">
-                                <span id="recommendation-badge" class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                                    No Rating
-                                </span>
-                            </div>
+
+                    <!-- Preview Section (Hidden by default) -->
+                    <div id="preview-section" style="display: none; margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--gray-border);">
+                        <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
+                            <span style="width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">✓</span>
+                            File Loaded Successfully
+                        </h3>
+                        <div style="background: var(--gray-light); border-radius: 12px; padding: 20px; margin-bottom: 24px; border-left: 4px solid var(--primary);">
+                            <div style="color: var(--gray-text); margin-bottom: 4px; font-size: 13px; font-weight: 600;">PARAMETERS READY</div>
+                            <div id="preview-count" style="font-size: 16px; font-weight: 700; color: var(--primary);">Loading...</div>
                         </div>
-                        
-                        <div class="mb-8">
-                            <h4 class="font-medium text-gray-800 mb-4">Parameter Scores</h4>
-                            <div id="scores-container" class="space-y-4">
-                            </div>
+                        <div style="background: var(--gray-light); border-radius: 12px; padding: 20px; margin-bottom: 24px; overflow-x: auto;">
+                            <div id="preview-table"></div>
                         </div>
-                        
-                        <div class="mb-8">
-                            <h4 class="font-medium text-gray-800 mb-4">Detailed Responses</h4>
-                            <div id="responses-container" class="space-y-6">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col md:flex-row gap-3 justify-between">
-                        <button id="restart-assessment" class="text-gray-600 hover:text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors order-3 md:order-1">
-                            Restart Assessment
-                        </button>
-                        <div class="flex gap-3 order-1 md:order-3">
-                            <button id="print-results" class="flex-1 md:flex-none bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors">
-                                Print Results
-                            </button>
-                            <button id="save-results" class="flex-1 md:flex-none bg-primary hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                                Save as PDF
-                            </button>
+                        <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                            <button class="btn-secondary" id="change-file">Change File</button>
+                            <button class="btn-primary" id="continue-btn">Continue to Selection</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
+
+            <!-- Screen 2: Parameter Selection -->
+            <div id="screen-selection" class="screen hidden">
+                <div class="card" style="max-width: 800px; margin: 0 auto;">
+                    <h2>Select Parameters</h2>
+                    <p style="margin-top: 8px; margin-bottom: 24px;">Choose the parameters you'd like to evaluate for this candidate.</p>
+
+                    <!-- Candidate Name -->
+                    <div style="margin-bottom: 24px;">
+                        <label for="candidate-name">Candidate Name (Optional)</label>
+                        <input type="text" id="candidate-name" placeholder="Enter candidate's name">
+                    </div>
+
+                    <!-- Parameters Grid -->
+                    <div class="param-grid" id="params-container"></div>
+
+                    <!-- Error Message -->
+                    <div id="selection-error" class="error-message hidden" style="margin-top: 24px;">Please select at least one parameter to continue.</div>
+
+                    <!-- Navigation -->
+                    <div class="nav-buttons">
+                        <button class="btn-secondary" id="back-to-upload">Back</button>
+                        <button class="btn-primary" id="start-interview">Start Assessment</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 3: Interview Phase -->
+            <div id="screen-interview" class="screen hidden">
+                <div class="card" style="max-width: 900px; margin: 0 auto;">
+                    <!-- Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <div>
+                            <h2>Interview Phase</h2>
+                            <p style="margin-top: 4px;">Pass 1: Conducting the Interview</p>
+                        </div>
+                        <div class="progress-info" id="interview-progress-text">1 of 5</div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill" id="interview-progress-bar" style="width: 20%;"></div>
+                    </div>
+
+                    <!-- Content -->
+                    <div style="margin-top: 32px;">
+                        <!-- Parameter Name -->
+                        <h3 id="interview-param-name">Parameter Name</h3>
+                        <p id="interview-param-desc" style="margin-top: 8px; margin-bottom: 24px;">Parameter description will appear here.</p>
+
+                        <!-- Question Box -->
+                        <div class="question-box">
+                            <span class="question-box-label">Interview Question</span>
+                            <div class="question-box-text" id="interview-question">What is your example question?</div>
+                        </div>
+
+                        <!-- STAR Fields -->
+                        <div style="background: rgba(99, 102, 241, 0.04); border-left: 4px solid var(--primary); padding: 16px; border-radius: 4px; margin: 24px 0;">
+                            <h4 style="margin-bottom: 8px; color: var(--primary);">STEP 1: Take Notes Using STAR Method</h4>
+                            <p style="font-size: 13px; color: var(--gray-text); margin-bottom: 0;">Document the candidate's response by taking notes in each section below. These notes will help you evaluate their performance against the BARS levels.</p>
+                        </div>
+
+                        <div class="star-grid">
+                            <div class="star-field">
+                                <label for="situation">Situation</label>
+                                <textarea id="situation" placeholder="Describe the situation..." data-field="situation"></textarea>
+                            </div>
+                            <div class="star-field">
+                                <label for="task">Task</label>
+                                <textarea id="task" placeholder="What was the task..." data-field="task"></textarea>
+                            </div>
+                            <div class="star-field">
+                                <label for="action">Action</label>
+                                <textarea id="action" placeholder="What action was taken..." data-field="action"></textarea>
+                            </div>
+                            <div class="star-field">
+                                <label for="result">Result</label>
+                                <textarea id="result" placeholder="What was the result..." data-field="result"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- BARS Levels Reference -->
+                        <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--gray-border);">
+                            <h4 style="margin-bottom: 8px; color: var(--primary);">STEP 2: BARS Levels Reference (For Your Review)</h4>
+                            <p style="font-size: 13px; color: var(--gray-text); margin-bottom: 20px;">Use these level definitions as a reference while assessing the candidate's response. You will rate them against these levels in the next phase.</p>
+                            <div class="level-grid" id="interview-levels"></div>
+                        </div>
+                    </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="nav-buttons">
+                        <button class="btn-secondary" id="interview-prev" disabled>Previous</button>
+                        <button class="btn-primary" id="interview-next">Next Parameter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 4: Grading Phase -->
+            <div id="screen-grading" class="screen hidden">
+                <div class="card" style="max-width: 900px; margin: 0 auto;">
+                    <!-- Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <div>
+                            <h2>Grading Phase</h2>
+                            <p style="margin-top: 4px;">Pass 2: Reviewing and Rating Performance</p>
+                        </div>
+                        <div class="progress-info" id="grading-progress-text">1 of 5</div>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill" id="grading-progress-bar" style="width: 20%;"></div>
+                    </div>
+
+                    <!-- Content -->
+                    <div style="margin-top: 32px;">
+                        <!-- Parameter Name -->
+                        <h3 id="grading-param-name">Parameter Name</h3>
+                        <p id="grading-param-desc" style="margin-top: 8px; margin-bottom: 24px;">Parameter description will appear here.</p>
+
+                        <!-- Question Box -->
+                        <div class="question-box">
+                            <span class="question-box-label">Question Asked</span>
+                            <div class="question-box-text" id="grading-question">Question will appear here.</div>
+                        </div>
+
+                        <!-- Review Notes -->
+                        <div>
+                            <h4 style="margin-bottom: 12px;">Your Interview Notes</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: var(--gray-light); padding: 16px; border-radius: 8px; margin-bottom: 24px;">
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 600; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Situation</div>
+                                    <div style="font-size: 13px; color: var(--gray-dark); line-height: 1.5;" id="review-situation">-</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 600; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Task</div>
+                                    <div style="font-size: 13px; color: var(--gray-dark); line-height: 1.5;" id="review-task">-</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 600; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Action</div>
+                                    <div style="font-size: 13px; color: var(--gray-dark); line-height: 1.5;" id="review-action">-</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 600; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Result</div>
+                                    <div style="font-size: 13px; color: var(--gray-dark); line-height: 1.5;" id="review-result">-</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rating Selection -->
+                        <div>
+                            <div style="background: rgba(99, 102, 241, 0.04); border-left: 4px solid var(--primary); padding: 16px; border-radius: 4px; margin: 24px 0;">
+                                <h4 style="margin-bottom: 8px; color: var(--primary);">STEP 2: Select Your Rating</h4>
+                                <p style="font-size: 13px; color: var(--gray-text); margin-bottom: 0;\">Based on the candidate's response and your notes above, select the rating that best describes their performance level. Rate them on the 4-level scale below.</p>
+                            </div>
+                            <div id="rating-error" class="error-message hidden" style="margin-bottom: 16px;">Please select a rating before proceeding.</div>
+                            <div id="grading-ratings" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;"></div>\n                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="nav-buttons">
+                        <button class="btn-secondary" id="grading-prev" disabled>Previous</button>
+                        <button class="btn-primary" id="grading-next">Next Parameter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 5: Results -->
+            <div id="screen-results" class="screen hidden">
+                <div class="card" style="max-width: 900px; margin: 0 auto;">
+                    <h2>Assessment Results</h2>
+                    <p style="margin-top: 8px; margin-bottom: 24px;">People's Lead Position Evaluation</p>
+
+                    <!-- Summary Box -->
+                    <div class="summary-box">
+                        <div class="summary-score-label">Overall Score</div>
+                        <div class="summary-score" id="results-score">3.5</div>
+                        <div class="recommendation-badge" id="results-recommendation">Strong Hire</div>
+                    </div>
+
+                    <!-- Candidate Info -->
+                    <div style="background: var(--gray-light); border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+                        <div style="font-size: 13px; color: var(--gray-text); margin-bottom: 4px;">CANDIDATE</div>
+                        <div style="font-weight: 600; color: var(--gray-dark); font-size: 15px;" id="results-candidate">Unnamed Candidate</div>
+                    </div>
+
+                    <!-- Scores -->
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="margin-bottom: 16px;">Parameter Scores</h3>
+                        <div id="results-scores"></div>
+                    </div>
+
+                    <!-- Detailed Responses -->
+                    <div style="margin-bottom: 32px;">
+                        <h3 style="margin-bottom: 16px;">Detailed Responses</h3>
+                        <div id="results-responses"></div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="nav-buttons">
+                        <button class="btn-secondary" id="restart-btn">Start New Assessment</button>
+                        <div style="display: flex; gap: 12px;">
+                            <button class="btn-secondary no-print" id="print-btn">Print Results</button>
+                            <button class="btn-primary" id="pdf-btn">Save as PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        const appState = {
-            currentScreen: 'upload',
+        // State Management
+        const state = {
             parameters: [],
-            selectedParameters: [],
+            selectedParams: [],
             candidateName: '',
-            currentParameterIndex: 0,
-            interviewNotes: {},
+            currentIndex: 0,
+            starNotes: {},
             ratings: {}
         };
 
+        // DOM Elements
         const screens = {
-            upload: document.getElementById('upload-screen'),
-            selection: document.getElementById('selection-screen'),
-            interview: document.getElementById('interview-screen'),
-            grading: document.getElementById('grading-screen'),
-            results: document.getElementById('results-screen')
+            upload: document.getElementById('screen-upload'),
+            selection: document.getElementById('screen-selection'),
+            interview: document.getElementById('screen-interview'),
+            grading: document.getElementById('screen-grading'),
+            results: document.getElementById('screen-results')
         };
 
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeEventListeners();
-            showScreen('upload');
-        });
+        // Initialize
+        document.addEventListener('DOMContentLoaded', initApp);
 
-        function initializeEventListeners() {
-            document.getElementById('browse-btn').addEventListener('click', () => {
-                document.getElementById('file-input').click();
+        function initApp() {
+            setupFileUpload();
+            setupEventListeners();
+        }
+
+        function setupFileUpload() {
+            const dropZone = document.getElementById('drop-zone');
+            const fileInput = document.getElementById('file-input');
+            const browseBtn = document.getElementById('browse-btn');
+            const downloadTemplate = document.getElementById('download-template');
+            const changeFile = document.getElementById('change-file');
+            const continueBtn = document.getElementById('continue-btn');
+
+            browseBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
             });
-            
-            document.getElementById('file-input').addEventListener('change', handleFileSelect);
-            
-            const dropArea = document.getElementById('drop-area');
-            dropArea.addEventListener('dragover', handleDragOver);
-            dropArea.addEventListener('dragleave', handleDragLeave);
-            dropArea.addEventListener('drop', handleDrop);
-            
-            document.getElementById('download-template').addEventListener('click', downloadSampleCSV);
-            document.getElementById('continue-to-selection').addEventListener('click', () => showScreen('selection'));
-            document.getElementById('change-file').addEventListener('click', resetUpload);
-            
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('drag-over');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                handleFile(e.dataTransfer.files[0]);
+            });
+
+            downloadTemplate.addEventListener('click', downloadSampleCSV);
+            changeFile.addEventListener('click', resetUpload);
+            continueBtn.addEventListener('click', () => showScreen('selection'));
+        }
+
+        function setupEventListeners() {
             document.getElementById('back-to-upload').addEventListener('click', resetUpload);
-            document.getElementById('start-assessment').addEventListener('click', startAssessment);
-            
-            document.getElementById('prev-parameter').addEventListener('click', prevParameter);
-            document.getElementById('next-parameter').addEventListener('click', nextParameter);
-            
-            document.getElementById('prev-grading').addEventListener('click', prevGrading);
-            document.getElementById('next-grading').addEventListener('click', nextGrading);
-            
-            document.getElementById('restart-assessment').addEventListener('click', restartAssessment);
-            document.getElementById('print-results').addEventListener('click', printResults);
-            document.getElementById('save-results').addEventListener('click', saveAsPDF);
-            
-            const noteFields = ['situation-notes', 'task-notes', 'action-notes', 'result-notes'];
-            noteFields.forEach(fieldId => {
-                document.getElementById(fieldId).addEventListener('input', saveCurrentNotes);
-            });
+            document.getElementById('start-interview').addEventListener('click', startInterview);
+            document.getElementById('interview-prev').addEventListener('click', prevInterview);
+            document.getElementById('interview-next').addEventListener('click', nextInterview);
+            document.getElementById('grading-prev').addEventListener('click', prevGrading);
+            document.getElementById('grading-next').addEventListener('click', nextGrading);
+            document.getElementById('restart-btn').addEventListener('click', restart);
+            document.getElementById('print-btn').addEventListener('click', printResults);
+            document.getElementById('pdf-btn').addEventListener('click', savePDF);
         }
 
-        function showScreen(screenName) {
-            Object.values(screens).forEach(screen => screen.classList.add('hidden'));
-            screens[screenName].classList.remove('hidden');
-            appState.currentScreen = screenName;
-            
-            if (screenName === 'selection') {
-                renderParameterSelection();
-            } else if (screenName === 'interview') {
-                startInterviewPhase();
-            } else if (screenName === 'grading') {
-                startGradingPhase();
-            } else if (screenName === 'results') {
-                renderResults();
-            }
-        }
+        function handleFile(file) {
+            if (!file) return;
 
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file) {
-                parseCSV(file);
-            }
-        }
-
-        function handleDragOver(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            document.getElementById('drop-area').classList.add('drag-over');
-        }
-
-        function handleDragLeave(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            document.getElementById('drop-area').classList.remove('drag-over');
-        }
-
-        function handleDrop(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            document.getElementById('drop-area').classList.remove('drag-over');
-            const files = event.dataTransfer.files;
-            if (files.length) {
-                parseCSV(files[0]);
-            }
-        }
-
-        function parseCSV(file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = (e) => {
                 try {
-                    const content = e.target.result;
-                    const lines = content.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                    const csv = e.target.result;
+                    const lines = csv.split('\n').map(l => l.trim()).filter(l => l);
                     
                     if (lines.length < 2) {
-                        showError('CSV file is empty. Please provide a file with header and data rows.');
+                        showError('CSV file is empty');
                         return;
                     }
-                    
-                    function parseCSVLine(line) {
-                        const result = [];
-                        let current = '';
-                        let inQuotes = false;
-                        
-                        for (let i = 0; i < line.length; i++) {
-                            const char = line[i];
-                            const nextChar = line[i + 1];
-                            
-                            if (char === '"') {
-                                if (inQuotes && nextChar === '"') {
-                                    current += '"';
-                                    i++;
-                                } else {
-                                    inQuotes = !inQuotes;
-                                }
-                            } else if (char === ',' && !inQuotes) {
-                                result.push(current.trim());
-                                current = '';
-                            } else {
-                                current += char;
-                            }
-                        }
-                        result.push(current.trim());
-                        return result;
-                    }
-                    
-                    const header = parseCSVLine(lines[0]);
-                    if (header.length !== 7) {
-                        showError(`Invalid CSV format. Expected 7 columns, found ${header.length}.\n\nExpected columns:\n1. Parameter Name\n2. Parameter Details/Description\n3. Interview Question\n4. Level 1: Needs Improvement\n5. Level 2: Meets Expectations\n6. Level 3: Exceeds Expectations\n7. Level 4: Outstanding`);
+
+                    const headers = parseCSVLine(lines[0]);
+                    if (headers.length !== 7) {
+                        showError(`Invalid CSV format. Expected 7 columns, found ${headers.length}`);
                         return;
                     }
-                    
-                    const parameters = [];
+
+                    const params = [];
                     for (let i = 1; i < lines.length; i++) {
                         const values = parseCSVLine(lines[i]);
-                        
-                        if (values.length === 7 && values.some(v => v.length > 0)) {
-                            const cleanValues = values.map(v => {
-                                if (v.startsWith('"') && v.endsWith('"')) {
-                                    return v.slice(1, -1);
-                                }
-                                return v;
+                        if (values.length === 7 && values[0]) {
+                            params.push({
+                                name: values[0],
+                                description: values[1],
+                                question: values[2],
+                                level1: values[3],
+                                level2: values[4],
+                                level3: values[5],
+                                level4: values[6]
                             });
-                            
-                            if (cleanValues[0].length > 0) {
-                                parameters.push({
-                                    name: cleanValues[0],
-                                    description: cleanValues[1] || 'No description provided',
-                                    question: cleanValues[2] || 'No question provided',
-                                    level1: cleanValues[3] || 'Level 1 description',
-                                    level2: cleanValues[4] || 'Level 2 description',
-                                    level3: cleanValues[5] || 'Level 3 description',
-                                    level4: cleanValues[6] || 'Level 4 description'
-                                });
-                            }
                         }
                     }
-                    
-                    if (parameters.length === 0) {
-                        showError('No valid parameters found in CSV file. Please check the file format and try again.');
+
+                    if (params.length === 0) {
+                        showError('No valid parameters found in CSV');
                         return;
                     }
-                    
-                    appState.parameters = parameters;
+
+                    state.parameters = params;
+                    showPreview();
                     hideError();
-                    showPreview(parameters);
                 } catch (error) {
-                    showError('Error parsing CSV file: ' + error.message);
+                    showError('Error parsing CSV: ' + error.message);
                 }
             };
             reader.readAsText(file);
         }
 
-        function showError(message) {
-            document.getElementById('error-message').classList.remove('hidden');
-            document.getElementById('error-text').textContent = message;
-            document.getElementById('preview-section').classList.add('hidden');
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                const next = line[i + 1];
+
+                if (char === '"') {
+                    if (inQuotes && next === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        function showPreview() {
+            const count = state.parameters.length;
+            document.getElementById('preview-count').textContent = `${count} parameter${count !== 1 ? 's' : ''} loaded`;
+
+            let html = '<table style="width: 100%; border-collapse: collapse; font-size: 13px;">';
+            html += '<thead><tr style="border-bottom: 1px solid var(--gray-border); text-align: left;">';
+            html += '<th style="padding: 8px; font-weight: 600; color: var(--gray-dark);">Parameter</th>';
+            html += '<th style="padding: 8px; font-weight: 600; color: var(--gray-dark);">Description</th>';
+            html += '</tr></thead><tbody>';
+
+            state.parameters.slice(0, 5).forEach(p => {
+                html += `<tr style="border-bottom: 1px solid var(--gray-border);"><td style="padding: 8px; color: var(--gray-dark);">${escapeHtml(p.name)}</td><td style="padding: 8px; color: var(--gray-text);">${escapeHtml(p.description.substring(0, 50))}${p.description.length > 50 ? '...' : ''}</td></tr>`;
+            });
+
+            html += '</tbody></table>';
+            document.getElementById('preview-table').innerHTML = html;
+            document.getElementById('preview-section').style.display = 'block';
+        }
+
+        function downloadSampleCSV() {
+            const csv = `Parameter Name,Parameter Details/Description,Interview Question to ask,Level 1: Needs Improvement,Level 2: Meets Expectations,Level 3: Exceeds Expectations,Level 4: Outstanding
+Critical Thinking,"Ability to analyze information and make sound judgments","Tell me about a time you solved a complex problem with limited information?","Cannot identify key issues or develop logical solutions","Can identify problems and apply standard solutions","Effectively analyzes complex situations and develops innovative solutions","Creates breakthrough solutions with exceptional analytical skills"
+Emotional Intelligence,"Ability to understand and manage emotions effectively","Describe a difficult interpersonal conflict you navigated","Shows little awareness of emotions and reacts inappropriately","Recognizes emotions in self and others; responds appropriately","Proactively manages emotions and helps others navigate challenges","Expertly reads situations and uses emotional intelligence to drive outcomes"
+Leadership & Influence,"Capacity to inspire and guide others toward shared goals","Share an example of leading a team through significant change","Struggles to motivate others; relies heavily on authority","Can lead small teams and influence peers in familiar situations","Inspires teams through vision and consistently achieves results","Creates culture of excellence and drives organizational transformation"
+People Psychology,"Understanding of human behavior and individual differences","How do you adapt your communication style for different personality types?","Limited understanding of differences; applies one-size-fits-all approach","Recognizes basic personality differences and adjusts accordingly","Deep understanding of patterns and tailors strategies to individuals","Anticipates behavioral responses and designs optimal interventions"
+Hunger/Ambition,"Drive for achievement and continuous improvement","Tell me about an impossible goal you set and achieved","Shows little initiative; requires constant direction","Takes on tasks and completes them satisfactorily","Proactively seeks challenges and exceeds expectations","Consistently sets ambitious goals and inspires others to excel"`;
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'bars_template.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function renderParameterSelection() {
+            const container = document.getElementById('params-container');
+            container.innerHTML = '';
+
+            state.parameters.forEach((p, i) => {
+                const div = document.createElement('div');
+                div.className = 'param-card';
+                div.innerHTML = `
+                    <div style="display: flex; gap: 12px;">
+                        <input type="checkbox" data-index="${i}" class="param-checkbox" style="margin-top: 2px;">
+                        <div style="flex: 1;">
+                            <div class="param-card-title">${escapeHtml(p.name)}</div>
+                            <div class="param-card-desc">${escapeHtml(p.description)}</div>
+                        </div>
+                    </div>
+                `;
+
+                const checkbox = div.querySelector('.param-checkbox');
+                checkbox.addEventListener('change', (e) => {
+                    const idx = parseInt(e.target.dataset.index);
+                    if (e.target.checked) {
+                        if (!state.selectedParams.includes(idx)) state.selectedParams.push(idx);
+                        div.classList.add('selected');
+                    } else {
+                        state.selectedParams = state.selectedParams.filter(i => i !== idx);
+                        div.classList.remove('selected');
+                    }
+                    document.getElementById('selection-error').classList.add('hidden');
+                });
+
+                container.appendChild(div);
+            });
+        }
+
+        function startInterview() {
+            state.candidateName = document.getElementById('candidate-name').value || 'Unnamed Candidate';
+
+            if (state.selectedParams.length === 0) {
+                document.getElementById('selection-error').classList.remove('hidden');
+                return;
+            }
+
+            state.selectedParams.forEach(i => {
+                state.starNotes[i] = { situation: '', task: '', action: '', result: '' };
+                state.ratings[i] = null;
+            });
+
+            state.currentIndex = 0;
+            showScreen('interview');
+            updateInterviewScreen();
+        }
+
+        function updateInterviewScreen() {
+            const paramIdx = state.selectedParams[state.currentIndex];
+            const param = state.parameters[paramIdx];
+
+            document.getElementById('interview-param-name').textContent = param.name;
+            document.getElementById('interview-param-desc').textContent = param.description;
+            document.getElementById('interview-question').textContent = param.question;
+
+            // Render levels
+            const levelsHtml = `
+                <div class="level-item">
+                    <div class="level-badge">1</div>
+                    <div>
+                        <div class="level-content-title">Needs Improvement</div>
+                        <div class="level-content-desc">${escapeHtml(param.level1)}</div>
+                    </div>
+                </div>
+                <div class="level-item">
+                    <div class="level-badge">2</div>
+                    <div>
+                        <div class="level-content-title">Meets Expectations</div>
+                        <div class="level-content-desc">${escapeHtml(param.level2)}</div>
+                    </div>
+                </div>
+                <div class="level-item">
+                    <div class="level-badge">3</div>
+                    <div>
+                        <div class="level-content-title">Exceeds Expectations</div>
+                        <div class="level-content-desc">${escapeHtml(param.level3)}</div>
+                    </div>
+                </div>
+                <div class="level-item">
+                    <div class="level-badge">4</div>
+                    <div>
+                        <div class="level-content-title">Outstanding</div>
+                        <div class="level-content-desc">${escapeHtml(param.level4)}</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('interview-levels').innerHTML = levelsHtml;
+
+            // Restore notes
+            const notes = state.starNotes[paramIdx];
+            document.getElementById('situation').value = notes.situation;
+            document.getElementById('task').value = notes.task;
+            document.getElementById('action').value = notes.action;
+            document.getElementById('result').value = notes.result;
+
+            // Update progress
+            const total = state.selectedParams.length;
+            const progress = ((state.currentIndex + 1) / total) * 100;
+            document.getElementById('interview-progress-bar').style.width = progress + '%';
+            document.getElementById('interview-progress-text').textContent = `${state.currentIndex + 1} of ${total}`;
+
+            document.getElementById('interview-prev').disabled = state.currentIndex === 0;
+        }
+
+        function saveInterviewNotes() {
+            const paramIdx = state.selectedParams[state.currentIndex];
+            state.starNotes[paramIdx] = {
+                situation: document.getElementById('situation').value,
+                task: document.getElementById('task').value,
+                action: document.getElementById('action').value,
+                result: document.getElementById('result').value
+            };
+        }
+
+        function prevInterview() {
+            saveInterviewNotes();
+            if (state.currentIndex > 0) {
+                state.currentIndex--;
+                updateInterviewScreen();
+            }
+        }
+
+        function nextInterview() {
+            saveInterviewNotes();
+            if (state.currentIndex < state.selectedParams.length - 1) {
+                state.currentIndex++;
+                updateInterviewScreen();
+            } else {
+                state.currentIndex = 0;
+                showScreen('grading');
+                updateGradingScreen();
+            }
+        }
+
+        function updateGradingScreen() {
+            const paramIdx = state.selectedParams[state.currentIndex];
+            const param = state.parameters[paramIdx];
+            const notes = state.starNotes[paramIdx];
+
+            document.getElementById('grading-param-name').textContent = param.name;
+            document.getElementById('grading-param-desc').textContent = param.description;
+            document.getElementById('grading-question').textContent = param.question;
+
+            document.getElementById('review-situation').textContent = notes.situation || '-';
+            document.getElementById('review-task').textContent = notes.task || '-';
+            document.getElementById('review-action').textContent = notes.action || '-';
+            document.getElementById('review-result').textContent = notes.result || '-';
+
+            // Render ratings
+            const ratingsHtml = `
+                <label class="radio-item">
+                    <input type="radio" name="rating" value="1" style="accent-color: var(--primary);">
+                    <div class="radio-label">
+                        <span class="radio-label-title">1 — Needs Improvement</span>
+                        <span class="radio-label-desc">${escapeHtml(param.level1)}</span>
+                    </div>
+                </label>
+                <label class="radio-item">
+                    <input type="radio" name="rating" value="2" style="accent-color: var(--primary);">
+                    <div class="radio-label">
+                        <span class="radio-label-title">2 — Meets Expectations</span>
+                        <span class="radio-label-desc">${escapeHtml(param.level2)}</span>
+                    </div>
+                </label>
+                <label class="radio-item">
+                    <input type="radio" name="rating" value="3" style="accent-color: var(--primary);">
+                    <div class="radio-label">
+                        <span class="radio-label-title">3 — Exceeds Expectations</span>
+                        <span class="radio-label-desc">${escapeHtml(param.level3)}</span>
+                    </div>
+                </label>
+                <label class="radio-item">
+                    <input type="radio" name="rating" value="4" style="accent-color: var(--primary);">
+                    <div class="radio-label">
+                        <span class="radio-label-title">4 — Outstanding</span>
+                        <span class="radio-label-desc">${escapeHtml(param.level4)}</span>
+                    </div>
+                </label>
+            `;
+            document.getElementById('grading-ratings').innerHTML = ratingsHtml;
+
+            // Restore rating
+            const rating = state.ratings[paramIdx];
+            if (rating) {
+                document.querySelector(`input[name="rating"][value="${rating}"]`).checked = true;
+            }
+
+            // Update progress
+            const total = state.selectedParams.length;
+            const progress = ((state.currentIndex + 1) / total) * 100;
+            document.getElementById('grading-progress-bar').style.width = progress + '%';
+            document.getElementById('grading-progress-text').textContent = `${state.currentIndex + 1} of ${total}`;
+
+            document.getElementById('grading-prev').disabled = state.currentIndex === 0;
+            document.getElementById('grading-next').textContent = state.currentIndex < total - 1 ? 'Next Parameter' : 'Complete Assessment';
+            document.getElementById('rating-error').classList.add('hidden');
+        }
+
+        function prevGrading() {
+            saveGradingRating();
+            if (state.currentIndex > 0) {
+                state.currentIndex--;
+                updateGradingScreen();
+            }
+        }
+
+        function nextGrading() {
+            const checked = document.querySelector('input[name="rating"]:checked');
+            if (!checked) {
+                document.getElementById('rating-error').classList.remove('hidden');
+                return;
+            }
+
+            saveGradingRating();
+
+            if (state.currentIndex < state.selectedParams.length - 1) {
+                state.currentIndex++;
+                updateGradingScreen();
+            } else {
+                showScreen('results');
+                renderResults();
+            }
+        }
+
+        function saveGradingRating() {
+            const paramIdx = state.selectedParams[state.currentIndex];
+            const checked = document.querySelector('input[name="rating"]:checked');
+            if (checked) {
+                state.ratings[paramIdx] = parseInt(checked.value);
+            }
+        }
+
+        function renderResults() {
+            // Calculate scores
+            let total = 0;
+            let count = 0;
+
+            state.selectedParams.forEach(i => {
+                if (state.ratings[i]) {
+                    total += state.ratings[i];
+                    count++;
+                }
+            });
+
+            const avg = count > 0 ? (total / count).toFixed(1) : 0;
+            document.getElementById('results-score').textContent = avg;
+            document.getElementById('results-candidate').textContent = state.candidateName;
+
+            // Recommendation
+            let rec = '';
+            if (avg >= 3.5) rec = 'Strong Hire';
+            else if (avg >= 3.0) rec = 'Hire';
+            else if (avg >= 2.5) rec = 'Conditional Hire';
+            else if (avg >= 2.0) rec = 'Proceed with Caution';
+            else rec = 'Do Not Hire';
+
+            document.getElementById('results-recommendation').textContent = rec;
+
+            // Scores
+            let scoresHtml = '';
+            state.selectedParams.forEach(i => {
+                const p = state.parameters[i];
+                const r = state.ratings[i] || 0;
+                const pct = (r / 4) * 100;
+                scoresHtml += `
+                    <div class="score-card">
+                        <div class="score-card-header">
+                            <div class="score-card-title">${escapeHtml(p.name)}</div>
+                            <div class="score-card-value">${r}/4</div>
+                        </div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('results-scores').innerHTML = scoresHtml;
+
+            // Responses
+            let respHtml = '';
+            state.selectedParams.forEach(i => {
+                const p = state.parameters[i];
+                const n = state.starNotes[i];
+                const r = state.ratings[i] || 0;
+                respHtml += `
+                    <div class="response-item">
+                        <div class="response-item-title">${escapeHtml(p.name)}</div>
+                        <div class="response-item-row">
+                            <div>
+                                <div class="response-field-label">Question</div>
+                                <div class="response-field-value">${escapeHtml(p.question)}</div>
+                            </div>
+                            <div>
+                                <div class="response-field-label">Rating</div>
+                                <div class="response-field-value" style="font-weight: 600; color: var(--primary);">${r}/4</div>
+                            </div>
+                        </div>
+                        <div class="response-item-row">
+                            <div>
+                                <div class="response-field-label">Situation</div>
+                                <div class="response-field-value">${escapeHtml(n.situation || '-')}</div>
+                            </div>
+                            <div>
+                                <div class="response-field-label">Task</div>
+                                <div class="response-field-value">${escapeHtml(n.task || '-')}</div>
+                            </div>
+                        </div>
+                        <div class="response-item-row">
+                            <div>
+                                <div class="response-field-label">Action</div>
+                                <div class="response-field-value">${escapeHtml(n.action || '-')}</div>
+                            </div>
+                            <div>
+                                <div class="response-field-label">Result</div>
+                                <div class="response-field-value">${escapeHtml(n.result || '-')}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('results-responses').innerHTML = respHtml;
+        }
+
+        function showScreen(name) {
+            Object.values(screens).forEach(s => s.classList.add('hidden'));
+            screens[name].classList.remove('hidden');
+
+            if (name === 'selection') {
+                renderParameterSelection();
+            }
+        }
+
+        function showError(msg) {
+            const err = document.getElementById('error-message');
+            err.textContent = msg;
+            err.classList.remove('hidden');
         }
 
         function hideError() {
             document.getElementById('error-message').classList.add('hidden');
         }
 
-        function showPreview(parameters) {
-            const previewSection = document.getElementById('preview-section');
-            const tbody = document.getElementById('preview-table-body');
-            
-            tbody.innerHTML = '';
-            const previewParams = parameters.slice(0, 5);
-            previewParams.forEach(param => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${escapeHtml(param.name)}</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">${escapeHtml(param.description.substring(0, 50))}${param.description.length > 50 ? '...' : ''}</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">${escapeHtml(param.question.substring(0, 50))}${param.question.length > 50 ? '...' : ''}</td>
-                `;
-                tbody.appendChild(row);
-            });
-            
-            document.getElementById('preview-count').textContent = `Total parameters: ${parameters.length}`;
-            previewSection.classList.remove('hidden');
-        }
-
-        function escapeHtml(text) {
-            const map = {
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                '"': '&quot;',
-                "'": '&#039;'
-            };
-            return text.replace(/[&<>"']/g, m => map[m]);
-        }
-
-        function downloadSampleCSV() {
-            const csvContent = `"Parameter","Details & Write-up","Questions to Ask (craft and probe)","Level 1: Basic","Level 2: Intermediate","Level 3: Proficient","Level 4: Expert"
-"Together we create magic! → Sensitivity to stakeholder needs","Understands and integrates customer, vendor, colleague, and societal expectations into day-to-day choices and strategy; adapts communication and follow-through to context.","1) Describe a recent situation where two stakeholder groups had conflicting needs—what trade-off did you make and why? 2) How did you change your communication for each audience? 3) What feedback did you collect and how did it alter your plan?","Listens when concerns are raised but inconsistent follow-through; communication style unchanged across audiences.","Acknowledges perspectives; accommodates reasonable requests; sometimes adjusts approach based on feedback.","Maintains regular dialogue to surface deeper needs; actively seeks and applies feedback for mutual benefit.","Consistently integrates stakeholder interests into decisions/strategy; mentors others to solicit and act on stakeholder feedback."
-"Together we create magic! → Transparent knowledge sharing","Builds trust and velocity by openly sharing insights, lessons, artifacts; creates channels that enable bidirectional knowledge flow.","1) What reusable insight or artifact did you share in the last month? 2) Where do teammates find it? 3) How did you encourage others to contribute back?","Shares only when prompted; perceived as protective of expertise.","Shares relevant updates/resources when directly applicable; responds positively to requests.","Proactively initiates best-practice exchanges; creates space for others’ perspectives.","Acts as cross-team “knowledge hub”; champions systems (forums, shared docs) that institutionalize open learning."
-"Together we create magic! → Acknowledges learning milestones","Normalizes learning by celebrating wins, openly discussing failures, and extracting explicit takeaways; rewards effort, not just outcomes.","1) What small win did you recognize recently and how? 2) Describe a failure you debriefed—what was learned, what changed? 3) How do you ensure effort is seen and rewarded?","Focus on task completion; moves past wins/failures without reflection.","Recognizes milestones when prompted; occasionally shares takeaways.","Routinely celebrates successes; invites open discussion of failures; encourages learning from mistakes.","Treats successes and setbacks as engines for growth; mentors others to value effort and learning equally with results."
-"Passionate Go-getters → Ambitious goals & initiative","Sets/stretch goals aligned to business impact; takes responsibility beyond formal scope; drives outcomes.","1) What was your last stretch goal and why was it bold? 2) What did you initiate that wasn’t assigned? 3) How did it change a key metric?","Completes assigned work; avoids additional scope unless asked.","Sets personal goals aligned to team; volunteers occasionally.","Regularly sets stretch goals; identifies and acts on opportunities beyond role, owns results.","Champions bold, high-impact goals tied to strategy; leads org-benefit initiatives and inspires others."
-"Passionate Go-getters → Engagement under setbacks","Sustains energy, problem-solving, and team morale through ambiguity, pressure, and failure.","1) Describe a tough phase—what did you do to keep progress and morale? 2) What rituals/tools keep you engaged during headwinds?","Shows frustration/detachment; needs close supervision during setbacks.","Performs core responsibilities; needs support to regain focus.","Maintains productivity and positive attitude; engages in problem-solving; supports team morale.","Sustains high engagement and composure during prolonged setbacks; models resilience and helps the team navigate positively."
-"Passionate Go-getters → Advocates company values","Communicates mission, values, achievements with visible energy; builds pride and belonging in and beyond the company.","1) When did you last promote our values externally? 2) What story do you use to illustrate our culture? 3) How do you tailor the message by audience?","Rarely speaks about values or achievements; appears indifferent.","Shares positives when prompted; polite enthusiasm.","Speaks passionately about mission/values in internal & external forums; shares vivid success stories.","Uses every forum to amplify culture/values; creates emotionally engaging environments that build pride/belonging."
-"Best Talent Only → Growth mindset & learning","Pursues and applies new skills; converts learning into visible improvement; supports others’ development.","1) Which skill did you acquire in the last quarter and where has it changed your work? 2) What learning plan do you own for the next 90 days? 3) How have you enabled a peer’s learning?","Relies on existing knowledge; treats learning as obligation.","Applies some new learning inconsistently; growth is reactive.","Regularly applies new skills; takes ownership of development.","Translates learning into innovation and measurable improvements; inspires/supports others’ learning journeys."
-"Best Talent Only → Outcome focus amid ambiguity","Maintains results orientation; reframes uncertainty into experiments and decisions; adapts plans without losing objectives.","1) Describe a time plans changed mid-stream—what outcome did you preserve and how? 2) What signals told you to pivot?","Performance affected by confusion; loses track when plans change.","Works toward goals but momentum dips during change; needs help to reprioritize.","Treats ambiguity with a solutions mindset; adapts plans and methods while staying result-focused.","Anticipates change; confidently reorients and guides others to remain outcome-focused."
-"Best Talent Only → Develops others (potential & gaps)","Spots strengths/aspirations; gives candid, frequent feedback; creates coaching and growth opportunities.","1) Who are your top potential bets and why? 2) What feedback did you give last week and what follow-up exists? 3) Which opportunities map to each person’s gap?","Focus on current output; avoids developmental feedback.","Acknowledges obvious potential; provides ad-hoc support when asked.","Proactively observes strengths/gaps; delivers regular feedback and aligned opportunities/coaching.","Builds personalized development plans; champions growth beyond current role; serves as mentor/talent advocate."
-"Team of Equals → Fairness & inclusion","Demonstrates equity across religion, gender, region, age, role; invites diverse perspectives; ensures equal access.","1) How did you ensure equal participation in your last meeting? 2) What decision improved inclusion and how do you measure it?","Operates on stereotypes; avoids engaging across differences.","Sometimes biased/unbalanced participation; needs reminders.","Fair and stereotype-free behavior; welcomes diverse viewpoints; collaborates inclusively.","Proactively builds an inclusive culture; mentors others; champions diversity initiatives."
-"Team of Equals → Feedback across hierarchies","Gives and receives feedback respectfully and often, regardless of relationship; focuses on behavior and outcomes.","1) Share a hard feedback you gave upward; what changed? 2) Describe feedback you received from a junior and how you acted.","Avoids, or gives vague/critical feedback; rejects feedback from lower hierarchy.","Gives feedback inconsistently; accepts feedback from trusted sources; sometimes defensive.","Gives behavior-focused, respectful feedback; receives feedback with openness and improvement.","Normalizes bidirectional feedback across all levels; models high emotional intelligence; fosters continuous improvement culture."
-"Team of Equals → Constructive challenge","Questions processes/assumptions to improve efficiency/effectiveness; proposes alternatives; enables safe dissent.","1) Which entrenched process did you challenge and what better option did you propose? 2) How do you invite dissent on your team?","Accepts flawed status quo; hesitates to question authority/peers.","Occasionally questions; may raise concerns without alternatives; discomfort challenging authority.","Thoughtfully challenges with practical improvements; engages respectfully despite differences.","Consistently challenges long-standing assumptions; leads change; mentors others to question constructively; creates safe debate."
-"Always working on our next best → Smart risk & experimentation","Takes calculated risks; runs experiments; treats failure as data; scales what works.","1) What experiment failed recently and what did you change as a result? 2) How do you bound downside when you try something new?","Avoids risk/experimentation; clings to familiar methods; discourages others.","Attempts low-stakes experiments; needs reassurance to try new approaches.","Willingly explores new approaches, even with stakes; supports others; resilient when things fail.","Initiates bold, well-bounded bets under uncertainty; builds a culture of fearless iteration and learning."
-"Always working on our next best → Creative ideation","Generates original, high-value ideas; applies creativity to processes/products; creates forums to ideate.","1) What non-obvious solution did you propose this quarter? 2) How do you structure team brainstorming to avoid groupthink?","Rarely suggests new ideas; resists creative change.","Occasionally proposes ideas within familiar boundaries; needs prompting.","Regularly produces original solutions beyond standard approaches; improves processes/products.","Repeatedly delivers breakthrough ideas with significant value; actively builds mechanisms for creativity across the org."
-"Always working on our next best → Long-term, far-sighted","Makes decisions with long-term implications in view; anticipates trends/risks; aligns to strategy.","1) What 2–3 long-range bets are you progressing and how do they map to strategy? 2) Which future risks did you pre-empt and how?","Optimizes for immediate needs; low awareness of long-term context.","Sometimes considers long-term but defaults to near-term tasks.","Usually plans with clear view of long-term implications; weighs risks/benefits.","Consistently aligns choices to long-term goals; anticipates trends/risks; guides others to adopt long-term perspective."
-"Own it like a Boss! → Stewardship of resources","Treats time, budget, tools as personal assets; minimizes waste; maximizes impact per unit resource.","1) How did you improve cost/time efficiency last cycle and by how much? 2) What trade-offs did you make to protect quality?","Waits for instructions; little concern for waste/inefficiency.","Uses resources responsibly with reminders; notices inefficiencies but acts reactively.","Proactively optimizes time/budget/resources; delivers high-quality with minimal waste.","Raises org bar on stewardship; coaches others; consistently balances cost, time, and impact at scale."
-"Own it like a Boss! → Commercial & market acumen (incl. P&L)","Understands industry trends, customer needs, competitors; makes decisions with P&L impact (revenue, cost, profitability).","1) Which market shift affected your roadmap most and how did you respond? 2) Quantify a decision you made with explicit P&L impact.","Low awareness of market/competition/customer; no P&L lens.","Aware but applies inconsistently; weak financial focus.","Keeps current on trends and competitors; factors revenue/cost/profit into decisions.","Anticipates market shifts; makes decisions with clear P&L impact; teaches others to think commercially."
-"Own it like a Boss! → Ownership of outcomes","Owns successes and failures; credits team; treats failures as learning; drives transparent post-mortems.","1) Describe a failure you owned publicly—what changed afterward? 2) How do you distribute credit on wins?","Takes credit for wins; blames others or externals for mistakes; avoids owning negatives.","Admits minor/obvious faults when prompted; rationalizes failures at times.","Openly owns mistakes; shares credit for success; uses failures as learning.","Publicly owns outcomes with humility; fosters open dialogue on success/failure to drive team growth."`;
-            
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', 'bars_assessment_template.csv');
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        function renderParameterSelection() {
-            const grid = document.getElementById('parameters-grid');
-            grid.innerHTML = '';
-            
-            appState.parameters.forEach((param, index) => {
-                const card = document.createElement('label');
-                card.className = 'checkbox-card border border-gray-200 rounded-lg p-4 hover-lift card-shadow';
-                card.innerHTML = `
-                    <div class="flex items-start">
-                        <input type="checkbox" class="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded param-checkbox" data-index="${index}">
-                        <div class="ml-3">
-                            <p class="block text-sm font-medium text-gray-800">${escapeHtml(param.name)}</p>
-                            <p class="text-gray-600 text-xs mt-1">${escapeHtml(param.description.substring(0, 80))}${param.description.length > 80 ? '...' : ''}</p>
-                        </div>
-                    </div>
-                `;
-                
-                const checkbox = card.querySelector('.param-checkbox');
-                checkbox.addEventListener('change', function() {
-                    const paramIndex = parseInt(this.getAttribute('data-index'));
-                    if (this.checked) {
-                        if (!appState.selectedParameters.includes(paramIndex)) {
-                            appState.selectedParameters.push(paramIndex);
-                        }
-                    } else {
-                        const idx = appState.selectedParameters.indexOf(paramIndex);
-                        if (idx > -1) {
-                            appState.selectedParameters.splice(idx, 1);
-                        }
-                    }
-                    document.getElementById('selection-warning').classList.add('hidden');
-                });
-                
-                grid.appendChild(card);
-            });
-        }
-
-        function startAssessment() {
-            appState.candidateName = document.getElementById('candidate-name').value || 'Unnamed Candidate';
-            
-            if (appState.selectedParameters.length === 0) {
-                document.getElementById('selection-warning').classList.remove('hidden');
-                return;
-            }
-            
-            appState.selectedParameters.forEach(index => {
-                appState.interviewNotes[index] = {
-                    situation: '',
-                    task: '',
-                    action: '',
-                    result: ''
-                };
-                appState.ratings[index] = null;
-            });
-            
-            showScreen('interview');
-        }
-
-        function startInterviewPhase() {
-            appState.currentParameterIndex = 0;
-            updateInterviewScreen();
-        }
-
-        function updateInterviewScreen() {
-            const paramIndex = appState.selectedParameters[appState.currentParameterIndex];
-            const param = appState.parameters[paramIndex];
-            
-            document.getElementById('current-parameter-name').textContent = param.name;
-            document.getElementById('current-parameter-description').textContent = param.description;
-            document.getElementById('current-interview-question').textContent = param.question;
-            document.getElementById('level-1-desc').textContent = param.level1;
-            document.getElementById('level-2-desc').textContent = param.level2;
-            document.getElementById('level-3-desc').textContent = param.level3;
-            document.getElementById('level-4-desc').textContent = param.level4;
-            
-            const notes = appState.interviewNotes[paramIndex] || {};
-            document.getElementById('situation-notes').value = notes.situation || '';
-            document.getElementById('task-notes').value = notes.task || '';
-            document.getElementById('action-notes').value = notes.action || '';
-            document.getElementById('result-notes').value = notes.result || '';
-            
-            const progressPercent = ((appState.currentParameterIndex + 1) / appState.selectedParameters.length) * 100;
-            document.getElementById('interview-progress-bar').style.width = `${progressPercent}%`;
-            document.getElementById('interview-progress-text').textContent = 
-                `${appState.currentParameterIndex + 1} of ${appState.selectedParameters.length} parameters`;
-            
-            document.getElementById('prev-parameter').disabled = appState.currentParameterIndex === 0;
-        }
-
-        function saveCurrentNotes() {
-            const paramIndex = appState.selectedParameters[appState.currentParameterIndex];
-            
-            appState.interviewNotes[paramIndex] = {
-                situation: document.getElementById('situation-notes').value,
-                task: document.getElementById('task-notes').value,
-                action: document.getElementById('action-notes').value,
-                result: document.getElementById('result-notes').value
-            };
-        }
-
-        function prevParameter() {
-            saveCurrentNotes();
-            if (appState.currentParameterIndex > 0) {
-                appState.currentParameterIndex--;
-                updateInterviewScreen();
-            }
-        }
-
-        function nextParameter() {
-            saveCurrentNotes();
-            if (appState.currentParameterIndex < appState.selectedParameters.length - 1) {
-                appState.currentParameterIndex++;
-                updateInterviewScreen();
-            } else {
-                showScreen('grading');
-            }
-        }
-
-        function startGradingPhase() {
-            appState.currentParameterIndex = 0;
-            updateGradingScreen();
-        }
-
-        function updateGradingScreen() {
-            const paramIndex = appState.selectedParameters[appState.currentParameterIndex];
-            const param = appState.parameters[paramIndex];
-            
-            document.getElementById('grading-parameter-name').textContent = param.name;
-            document.getElementById('grading-parameter-description').textContent = param.description;
-            document.getElementById('grading-interview-question').textContent = param.question;
-            
-            const notes = appState.interviewNotes[paramIndex] || {};
-            document.getElementById('review-situation').textContent = notes.situation || '-';
-            document.getElementById('review-task').textContent = notes.task || '-';
-            document.getElementById('review-action').textContent = notes.action || '-';
-            document.getElementById('review-result').textContent = notes.result || '-';
-            
-            document.getElementById('grade-level-1-desc').textContent = param.level1;
-            document.getElementById('grade-level-2-desc').textContent = param.level2;
-            document.getElementById('grade-level-3-desc').textContent = param.level3;
-            document.getElementById('grade-level-4-desc').textContent = param.level4;
-            
-            document.querySelectorAll('input[name="rating"]').forEach(radio => {
-                radio.checked = false;
-            });
-            
-            const rating = appState.ratings[paramIndex];
-            if (rating) {
-                document.getElementById(`rating-${rating}`).checked = true;
-            }
-            
-            const progressPercent = ((appState.currentParameterIndex + 1) / appState.selectedParameters.length) * 100;
-            document.getElementById('grading-progress-bar').style.width = `${progressPercent}%`;
-            document.getElementById('grading-progress-text').textContent = 
-                `${appState.currentParameterIndex + 1} of ${appState.selectedParameters.length} parameters`;
-            
-            document.getElementById('prev-grading').disabled = appState.currentParameterIndex === 0;
-            document.getElementById('next-grading').textContent = 
-                appState.currentParameterIndex < appState.selectedParameters.length - 1 ? 'Next Parameter' : 'Complete Assessment';
-            document.getElementById('rating-warning').classList.add('hidden');
-        }
-
-        function prevGrading() {
-            saveCurrentRating();
-            if (appState.currentParameterIndex > 0) {
-                appState.currentParameterIndex--;
-                updateGradingScreen();
-            }
-        }
-
-        function nextGrading() {
-            const selectedRating = document.querySelector('input[name="rating"]:checked');
-            if (!selectedRating) {
-                document.getElementById('rating-warning').classList.remove('hidden');
-                return;
-            }
-            
-            saveCurrentRating();
-            if (appState.currentParameterIndex < appState.selectedParameters.length - 1) {
-                appState.currentParameterIndex++;
-                updateGradingScreen();
-            } else {
-                showScreen('results');
-            }
-        }
-
-        function saveCurrentRating() {
-            const paramIndex = appState.selectedParameters[appState.currentParameterIndex];
-            const selectedRating = document.querySelector('input[name="rating"]:checked');
-            
-            if (selectedRating) {
-                appState.ratings[paramIndex] = parseInt(selectedRating.id.replace('rating-', ''));
-            }
-        }
-
-        function renderResults() {
-            let totalScore = 0;
-            let ratedCount = 0;
-            
-            appState.selectedParameters.forEach(index => {
-                if (appState.ratings[index]) {
-                    totalScore += appState.ratings[index];
-                    ratedCount++;
-                }
-            });
-            
-            const overallScore = ratedCount > 0 ? (totalScore / ratedCount).toFixed(1) : 0;
-            document.getElementById('overall-score').textContent = overallScore;
-            
-            document.getElementById('results-candidate-name').textContent = `Candidate: ${appState.candidateName}`;
-            
-            let recommendation = '';
-            let badgeClass = '';
-            
-            if (overallScore >= 3.5) {
-                recommendation = 'Strong Hire';
-                badgeClass = 'bg-green-100 text-green-800';
-            } else if (overallScore >= 3.0) {
-                recommendation = 'Hire';
-                badgeClass = 'bg-blue-100 text-blue-800';
-            } else if (overallScore >= 2.5) {
-                recommendation = 'Conditional Hire';
-                badgeClass = 'bg-yellow-100 text-yellow-800';
-            } else if (overallScore >= 2.0) {
-                recommendation = 'Proceed with Caution';
-                badgeClass = 'bg-orange-100 text-orange-800';
-            } else {
-                recommendation = 'Do Not Hire';
-                badgeClass = 'bg-red-100 text-red-800';
-            }
-            
-            const badge = document.getElementById('recommendation-badge');
-            badge.textContent = recommendation;
-            badge.className = `inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${badgeClass}`;
-            
-            const scoresContainer = document.getElementById('scores-container');
-            scoresContainer.innerHTML = '';
-            
-            appState.selectedParameters.forEach(index => {
-                const param = appState.parameters[index];
-                const rating = appState.ratings[index] || 0;
-                const scorePercent = (rating / 4) * 100;
-                
-                const scoreItem = document.createElement('div');
-                scoreItem.className = 'space-y-2';
-                scoreItem.innerHTML = `
-                    <div class="flex justify-between">
-                        <span class="font-medium text-gray-800">${escapeHtml(param.name)}</span>
-                        <span class="font-medium text-primary">${rating}/4</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-primary h-2 rounded-full progress-bar" style="width: ${scorePercent}%"></div>
-                    </div>
-                `;
-                scoresContainer.appendChild(scoreItem);
-            });
-            
-            const responsesContainer = document.getElementById('responses-container');
-            responsesContainer.innerHTML = '';
-            
-            appState.selectedParameters.forEach(index => {
-                const param = appState.parameters[index];
-                const notes = appState.interviewNotes[index] || {};
-                const rating = appState.ratings[index] || 0;
-                
-                const responseItem = document.createElement('div');
-                responseItem.className = 'border border-gray-200 rounded-lg p-5';
-                responseItem.innerHTML = `
-                    <h5 class="font-medium text-gray-800 mb-2">${escapeHtml(param.name)}</h5>
-                    <div class="mb-3">
-                        <p class="text-gray-600 text-sm"><span class="font-medium">Question:</span> ${escapeHtml(param.question)}</p>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                        <div>
-                            <p class="text-gray-700 text-sm"><span class="font-medium">Situation:</span> ${escapeHtml(notes.situation || '-')}</p>
-                        </div>
-                        <div>
-                            <p class="text-gray-700 text-sm"><span class="font-medium">Task:</span> ${escapeHtml(notes.task || '-')}</p>
-                        </div>
-                        <div>
-                            <p class="text-gray-700 text-sm"><span class="font-medium">Action:</span> ${escapeHtml(notes.action || '-')}</p>
-                        </div>
-                        <div>
-                            <p class="text-gray-700 text-sm"><span class="font-medium">Result:</span> ${escapeHtml(notes.result || '-')}</p>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="text-gray-700 text-sm"><span class="font-medium">Rating:</span> 
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                                rating === 1 ? 'bg-red-100 text-red-800' :
-                                rating === 2 ? 'bg-yellow-100 text-yellow-800' :
-                                rating === 3 ? 'bg-green-100 text-green-800' :
-                                rating === 4 ? 'bg-primary text-white' : 'bg-gray-100 text-gray-800'
-                            }">
-                                ${rating}/4
-                            </span>
-                        </p>
-                    </div>
-                `;
-                responsesContainer.appendChild(responseItem);
-            });
-        }
-
         function resetUpload() {
-            appState.parameters = [];
-            appState.selectedParameters = [];
+            state.parameters = [];
+            state.selectedParams = [];
             document.getElementById('file-input').value = '';
-            document.getElementById('preview-section').classList.add('hidden');
+            document.getElementById('preview-section').style.display = 'none';
             hideError();
             showScreen('upload');
         }
 
-        function restartAssessment() {
-            appState.selectedParameters = [];
-            appState.candidateName = '';
-            appState.currentParameterIndex = 0;
-            appState.interviewNotes = {};
-            appState.ratings = {};
-            
+        function restart() {
+            state.selectedParams = [];
+            state.candidateName = '';
+            state.currentIndex = 0;
+            state.starNotes = {};
+            state.ratings = {};
             document.getElementById('candidate-name').value = '';
-            document.querySelectorAll('.param-checkbox').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            
             showScreen('selection');
+            renderParameterSelection();
         }
 
         function printResults() {
             window.print();
         }
 
-        function saveAsPDF() {
-            const element = document.getElementById('results-screen');
+        function savePDF() {
+            const element = document.getElementById('screen-results');
             const opt = {
                 margin: 10,
-                filename: `BARS_Assessment_${appState.candidateName.replace(/\s+/g, '_')}.pdf`,
+                filename: `BARS_Assessment_${state.candidateName.replace(/\s+/g, '_')}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2 },
                 jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
             };
             html2pdf().set(opt).from(element).save();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
     </script>
 </body>
